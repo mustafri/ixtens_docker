@@ -1,0 +1,28 @@
+joomla_own:
+  container_name: apache_php
+  build: ./apache_php/
+  volumes:
+    - ./apache_php/src/:/var/www/html/
+  links:
+    - joomla_db
+
+
+joomla_db:
+  container_name: db_mysql
+  build: ./db_mysql/
+  volumes:
+    - ./db_mysql/db/:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_USER=joomla
+    - MYSQL_PASSWORD=joomla
+    - MYSQL_DATABASE=joomla
+
+
+joomla_ngixn:
+  container_name: nginx
+  build: ./nginx/
+  links:
+    - joomla_own
+  ports:
+   - 443:443
